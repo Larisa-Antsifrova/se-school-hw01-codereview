@@ -1,0 +1,27 @@
+{
+  "name": "project-ses-bit-web-api",
+  "version": "1.0.0",
+  "description": "Test task for SES.",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Larisa-Antsifrova/project-ses-bit-web-api.git"
+  },
+  "author": "Larisa Antsifrova",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.2.6",
+    "helmet": "^4.6.0",
+    "joi": "^17.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "nodemon": "^2.0.7",
+    "uuid": "^8.3.2"
+  }
+}
