@@ -1,7 +1,7 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const jwt = require('jsonwebtoken');
 const User = require('../repositories/users-repository');
+const PasswordService = require('../services/password-service');
 const isUniqueUser = require('../helpers/is-unique');
 const { HttpCodes } = require('../helpers/constants');
 
@@ -17,7 +17,7 @@ const createUser = async (req, res, next) => {
         .json({ message: 'This email is already in use.' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 8);
+    const hashedPassword = await PasswordService.hashPassword(password);
 
     const addedUser = await User.addNewUser({
       name,
@@ -45,7 +45,10 @@ const loginUser = async (req, res, next) => {
         .json({ message: 'Invalid credentials.' });
     }
 
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    const isPasswordCorrect = await PasswordService.comparePassword(
+      password,
+      user.password,
+    );
 
     if (!isPasswordCorrect) {
       return res
@@ -55,7 +58,7 @@ const loginUser = async (req, res, next) => {
 
     const payload = { id: user.id, name: user.name };
     const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
-    const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '4h' }); // access token is given for 4 hours
+    const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '4h' });
 
     return res.json({
       message: 'You have successfully logged in.',
