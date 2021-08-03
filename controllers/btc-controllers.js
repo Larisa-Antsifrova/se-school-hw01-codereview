@@ -1,4 +1,4 @@
-const RatesService = require('../services/coinlayer-api');
+const RatesService = require('../services/coinlayer-api-service');
 
 const getBtcRate = async (req, res, next) => {
   try {
