@@ -1,7 +1,7 @@
 require('dotenv').config();
 const axios = require('axios');
 
-const COINLAYER_API_KEY = process.env.COINLAYER_API_KEY;
+const { COINLAYER_API_KEY } = process.env;
 const coinlayer = axios.create({
   baseURL: 'http://api.coinlayer.com', // only HTTP is available in free tier, HTTPS - in premium one
 });

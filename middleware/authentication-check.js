@@ -2,7 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const { HttpCodes } = require('../helpers/constants');
 
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+const { JWT_SECRET_KEY } = process.env;
 
 const isAuthenticated = (req, res, next) => {
   try {
