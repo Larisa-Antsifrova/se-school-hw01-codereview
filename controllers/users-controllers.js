@@ -1,7 +1,7 @@
 require('dotenv').config();
-const jwt = require('jsonwebtoken');
 const User = require('../repositories/users-repository');
 const PasswordService = require('../services/password-service');
+const TokenService = require('../services/jwt-token-service');
 const isUniqueUser = require('../helpers/is-unique');
 const { HttpCodes } = require('../helpers/constants');
 
@@ -57,8 +57,8 @@ const loginUser = async (req, res, next) => {
     }
 
     const payload = { id: user.id, name: user.name };
-    const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
-    const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '4h' });
+
+    const token = TokenService.generateToken(payload);
 
     return res.json({
       message: 'You have successfully logged in.',
