@@ -6,22 +6,24 @@ const coinlayer = axios.create({
   baseURL: 'http://api.coinlayer.com', // only HTTP is available in free tier, HTTPS - in premium one
 });
 
-const fetchUahToBtcRate = async () => {
-  try {
-    const {
-      data: { timestamp, target, rates },
-    } = await coinlayer.get('/live', {
-      params: {
-        access_key: COINLAYER_API_KEY,
-        target: 'UAH',
-        symbols: 'BTC',
-      },
-    });
+class RatesService {
+  async fetchUahToBtcRate() {
+    try {
+      const {
+        data: { timestamp, target, rates },
+      } = await coinlayer.get('/live', {
+        params: {
+          access_key: COINLAYER_API_KEY,
+          target: 'UAH',
+          symbols: 'BTC',
+        },
+      });
 
-    return { timestamp, target, rates };
-  } catch (error) {
-    console.log('Error in fetchUahToBtcRate: ', error.message);
+      return { timestamp, target, rates };
+    } catch (error) {
+      console.log('Error in fetchUahToBtcRate: ', error.message);
+    }
   }
-};
+}
 
-module.exports = { fetchUahToBtcRate };
+module.exports = new RatesService();

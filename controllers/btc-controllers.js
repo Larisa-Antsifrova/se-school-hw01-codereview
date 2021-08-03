@@ -1,10 +1,10 @@
-const Coinlayer = require('../services/coinlayer-api');
+const RatesService = require('../services/coinlayer-api');
 
 const getBtcRate = async (req, res, next) => {
   try {
-    const result = await Coinlayer.fetchUahToBtcRate();
+    const rates = await RatesService.fetchUahToBtcRate();
 
-    return res.json({ ...result });
+    return res.json({ ...rates });
   } catch (error) {
     next(error);
   }
