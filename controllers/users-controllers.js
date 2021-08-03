@@ -3,7 +3,7 @@ const User = require('../repositories/users-repository');
 const PasswordService = require('../services/password-service');
 const TokenService = require('../services/jwt-token-service');
 const isUniqueUser = require('../helpers/is-unique');
-const { HttpCodes } = require('../helpers/constants');
+const { HttpCodes, responseMessages } = require('../helpers/constants');
 
 const createUser = async (req, res, next) => {
   try {
@@ -14,7 +14,7 @@ const createUser = async (req, res, next) => {
     if (!isUnique) {
       return res
         .status(HttpCodes.CONFLICT)
-        .json({ message: 'This email is already in use.' });
+        .json({ message: responseMessages.emailConflict });
     }
 
     const hashedPassword = await PasswordService.hashPassword(password);
@@ -27,7 +27,7 @@ const createUser = async (req, res, next) => {
 
     return res
       .status(HttpCodes.CREATED)
-      .json({ message: 'You have successfully registered.', user: addedUser });
+      .json({ message: responseMessages.registrationSuccess, user: addedUser });
   } catch (error) {
     next(error);
   }
@@ -42,7 +42,7 @@ const loginUser = async (req, res, next) => {
     if (!user) {
       return res
         .status(HttpCodes.UNAUTHORIZED)
-        .json({ message: 'Invalid credentials.' });
+        .json({ message: responseMessages.invalidCreds });
     }
 
     const isPasswordCorrect = await PasswordService.comparePassword(
@@ -53,16 +53,15 @@ const loginUser = async (req, res, next) => {
     if (!isPasswordCorrect) {
       return res
         .status(HttpCodes.UNAUTHORIZED)
-        .json({ message: 'Invalid credentials.' });
+        .json({ message: responseMessages.invalidCreds });
     }
 
-    const payload = { id: user.id, name: user.name };
-
-    const token = TokenService.generateToken(payload);
+    const { id, name, email: userEmail } = user;
+    const token = TokenService.generateToken({ id, name });
 
     return res.json({
-      message: 'You have successfully logged in.',
-      user: { name: user.name, email: user.email, token },
+      message: responseMessages.loginSuccess,
+      user: { name, token, email: userEmail },
     });
   } catch (error) {
     next(error);
