@@ -22,4 +22,11 @@ const validationConfig = {
   minDomainSegments: 2,
 };
 
-module.exports = { HttpCodes, Ports, validationConfig };
+const responseMessages = {
+  loginSuccess: 'You have successfully logged in.',
+  registrationSuccess: 'You have successfully registered.',
+  emailConflict: 'This email is already in use.',
+  invalidCreds: 'Invalid credentials.',
+};
+
+module.exports = { HttpCodes, Ports, validationConfig, responseMessages };
